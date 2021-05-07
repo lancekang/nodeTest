@@ -6,7 +6,11 @@ app.listen(3000, function(){
     console.log('start express server on port 3000')
 })
 app.use(express.static('public'))
-app.use(bodyParser.json())
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 app.get('/', function(req, res){
     // res.send("<h1>hi friend!</h1>");
     res.sendFile(__dirname + "/public/main.html")
@@ -23,5 +27,7 @@ app.get('/form', function(req, res){
 })
 
 app.post('/email_post', function(req, res){
-    res.send("post_response");
+    // console.log(req.body.email)
+    //res.send(`<h1>welcome ${req.body.email}!</h1>`);
+    res.render('email.ejs', {'email':req.body.email})
 });
